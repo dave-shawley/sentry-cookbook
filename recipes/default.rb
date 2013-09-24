@@ -27,17 +27,24 @@
 include_recipe 'python'
 
 ['python-dev', 'python-setuptools'].each do |pkg_name|
-    package pkg_name do
-        action :install
-    end
+  package pkg_name do
+    action :install
+  end
 end
 
 user node['sentry_user'] do
-    gid 'daemon'
-    shell '/bin/false'
-    system true
-    home node['sentry_home']
-    action :create
+  gid 'daemon'
+  shell '/bin/false'
+  system true
+  home node['sentry_home']
+  action :create
+end
+
+directory node['sentry_home'] do
+  owner node['sentry_user']
+  group 'daemon'
+  mode 0750
+  action :create
 end
 
 python_pip 'sentry'
