@@ -26,10 +26,8 @@
 
 include_recipe 'python'
 
-['python-dev', 'python-setuptools'].each do |pkg_name|
-  package pkg_name do
-    action :install
-  end
+package 'python-setuptools' do
+  action :install
 end
 
 user node['sentry_user'] do
