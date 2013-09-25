@@ -12,7 +12,7 @@ namespace :vendor do
 
   desc '"Vendor" the cookbooks using berks'
   task :install do
-    sh 'berks', 'install', '--path', 'vendor/cookbooks'
+    sh %Q{berks install --path vendor/cookbooks}
   end
 end
 
@@ -22,4 +22,12 @@ namespace :spec do
 
   desc 'Run unit tests'
   task :unit => ['vendor:install', :spec]
+end
+
+
+desc 'Remove all of the generated files'
+task 'maintainer-clean' do
+  Rake::Task['vendor:clean'].execute
+  sh 'vagrant destroy -f'
+  rmtree '.vagrant'
 end
