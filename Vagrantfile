@@ -17,8 +17,8 @@ Vagrant.configure('2') do |config|
     chef.json = {
     }
     chef.run_list = [
-        'recipe[minitest-handler::default]',
-        'recipe[sentry::default]',
+      'recipe[minitest-handler::default]',
+      'recipe[sentry::default]',
     ]
   end
 
