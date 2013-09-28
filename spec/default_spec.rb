@@ -2,15 +2,12 @@ require 'chefspec'
 
 
 describe 'sentry::default' do
-#    before(:each) do
-#        chef_run = ChefSpec::ChefRunner.new
-#    end
 
     it 'installs sentry requirements' do
         chef_run = ChefSpec::ChefRunner.new
         chef_run.converge 'sentry::default'
+
         expect(chef_run).to install_package 'python-setuptools'
-        expect(chef_run).to install_package 'python-dev'
     end
 
     it 'creates sentry user' do
