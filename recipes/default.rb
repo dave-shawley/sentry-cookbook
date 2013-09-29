@@ -45,4 +45,3 @@ directory node['sentry_home'] do
   action :create
 end
 
-python_pip 'sentry'

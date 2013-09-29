@@ -48,10 +48,6 @@ describe 'sentry::default' do
   end
 
   it 'installs sentry package' do
-    chef_run = ChefSpec::ChefRunner.new
-    chef_run.converge 'sentry::default'
-
-    expect(chef_run).to install_python_pip 'sentry'
     pending 'should install into virtualenv'
   end
 
