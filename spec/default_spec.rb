@@ -21,6 +21,17 @@ describe 'sentry::default' do
     expect(user.home).to eq '/configured/home/dir'
   end
 
+  it 'creates sentry group' do
+    chef_run = ChefSpec::ChefRunner.new
+    chef_run.node.set['sentry_group'] = 'configured-group'
+    chef_run.node.set['sentry_user'] = 'configured-user'
+    chef_run.converge  'sentry::default'
+
+    expect(chef_run).to create_group 'configured-group'
+    group = chef_run.group 'configured-group'
+    expect(group.members).to eq ['configured-user']
+  end
+
   it 'uses sensible default user attributes' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.converge 'sentry::default'
@@ -35,11 +46,15 @@ describe 'sentry::default' do
 
   it 'creates sentry home directory' do
     chef_run = ChefSpec::ChefRunner.new
+    chef_run.node.set['sentry_home'] = '/configured/home/dir'
+    chef_run.node.set['sentry_user'] = 'configured-user'
+    chef_run.node.set['sentry_group'] = 'configured-group'
     chef_run.converge 'sentry::default'
 
-    expect(chef_run).to create_directory '/var/sentry'
-    dir = chef_run.directory '/var/sentry'
-    expect(dir.owner).to eq 'sentry'
+    expect(chef_run).to create_directory '/configured/home/dir'
+    dir = chef_run.directory '/configured/home/dir'
+    expect(dir.owner).to eq 'configured-user'
+    expect(dir.group).to eq 'configured-group'
     expect(dir.mode).to eq 0750
   end
 

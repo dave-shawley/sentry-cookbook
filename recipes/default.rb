@@ -38,9 +38,14 @@ user node['sentry_user'] do
   action :create
 end
 
+group node['sentry_group'] do
+  members node['sentry_user']
+  action :create
+end
+
 directory node['sentry_home'] do
   owner node['sentry_user']
-  group 'daemon'
+  group node['sentry_group']
   mode 0750
   action :create
 end
