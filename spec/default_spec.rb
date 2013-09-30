@@ -1,6 +1,19 @@
 require 'chefspec'
 
 
+module ChefSpec
+  class ChefRunner
+    def python_virtualenv(name)
+      find_resource 'python_virtualenv', name
+    end
+  end
+
+  module Matchers
+    define_resource_matchers([:create, :delete], [:python_virtualenv], :name)
+  end
+end
+
+
 describe 'sentry::default' do
 
   it 'installs sentry requirements' do
@@ -59,7 +72,15 @@ describe 'sentry::default' do
   end
 
   it 'creates sentry virtual environment' do
-    pending 'TODO'
+    chef_run = ChefSpec::ChefRunner.new
+    chef_run.node.set['sentry_group'] = 'configured-group'
+    chef_run.node.set['sentry_admin'] = 'admin-user'
+    chef_run.converge 'sentry::default'
+
+    expect(chef_run).to create_python_virtualenv '/opt/sentry'
+    env = chef_run.python_virtualenv '/opt/sentry'
+    expect(env.owner).to eq 'admin-user'
+    expect(env.group).to eq 'configured-group'
   end
 
   it 'installs sentry package' do

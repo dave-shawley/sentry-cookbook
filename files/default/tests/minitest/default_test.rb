@@ -13,4 +13,13 @@ describe 'sentry::default' do
     group('sentry').must_exist
   end
 
+  it 'creates a virtualenv for sentry' do
+    dir_entry = directory('/opt/sentry')
+    dir_entry.must_exist.with('owner', 'sentry').and('group', 'sentry')
+    assert dir_entry.mode.to_i & 040, \
+      'Expected /opt/sentry to be writable by the administrative group'
+    file('/opt/sentry/bin/activate').must_exist
+    file('/opt/sentry/bin/python').must_exist
+  end
+
 end

@@ -50,3 +50,15 @@ directory node['sentry_home'] do
   action :create
 end
 
+directory '/opt/sentry' do
+  owner node['sentry_user']
+  group node['sentry_group']
+  mode 0775
+  action :create
+end
+
+python_virtualenv '/opt/sentry' do
+  owner node['sentry_admin']
+  group node['sentry_group']
+  action :create
+end
