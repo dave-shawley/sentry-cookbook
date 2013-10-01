@@ -25,7 +25,7 @@ describe 'sentry::default' do
 
   it 'creates sentry user' do
     chef_run = ChefSpec::ChefRunner.new
-    chef_run.node.set['sentry_user'] = 'configured-user'
+    chef_run.node.set['sentry']['user'] = 'configured-user'
     chef_run.node.set['sentry_home'] = '/configured/home/dir'
     chef_run.converge 'sentry::default'
 
@@ -37,7 +37,7 @@ describe 'sentry::default' do
   it 'creates sentry group' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry_group'] = 'configured-group'
-    chef_run.node.set['sentry_user'] = 'configured-user'
+    chef_run.node.set['sentry']['user'] = 'configured-user'
     chef_run.converge  'sentry::default'
 
     expect(chef_run).to create_group 'configured-group'
@@ -60,7 +60,7 @@ describe 'sentry::default' do
   it 'creates sentry home directory' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry_home'] = '/configured/home/dir'
-    chef_run.node.set['sentry_user'] = 'configured-user'
+    chef_run.node.set['sentry']['user'] = 'configured-user'
     chef_run.node.set['sentry_group'] = 'configured-group'
     chef_run.converge 'sentry::default'
 

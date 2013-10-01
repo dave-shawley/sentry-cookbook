@@ -30,7 +30,7 @@ package 'python-setuptools' do
   action :install
 end
 
-user node['sentry_user'] do
+user node['sentry']['user'] do
   gid 'daemon'
   shell '/bin/false'
   system true
@@ -39,19 +39,19 @@ user node['sentry_user'] do
 end
 
 group node['sentry_group'] do
-  members node['sentry_user']
+  members node['sentry']['user']
   action :create
 end
 
 directory node['sentry_home'] do
-  owner node['sentry_user']
+  owner node['sentry']['user']
   group node['sentry_group']
   mode 0750
   action :create
 end
 
 directory '/opt/sentry' do
-  owner node['sentry_user']
+  owner node['sentry']['user']
   group node['sentry_group']
   mode 0775
   action :create
