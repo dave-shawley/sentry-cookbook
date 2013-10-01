@@ -38,27 +38,27 @@ user node['sentry']['user'] do
   action :create
 end
 
-group node['sentry_group'] do
+group node['sentry']['admin_group'] do
   members node['sentry']['user']
   action :create
 end
 
 directory node['sentry_home'] do
   owner node['sentry']['user']
-  group node['sentry_group']
+  group node['sentry']['admin_group']
   mode 0750
   action :create
 end
 
 directory '/opt/sentry' do
   owner node['sentry']['user']
-  group node['sentry_group']
+  group node['sentry']['admin_group']
   mode 0775
   action :create
 end
 
 python_virtualenv '/opt/sentry' do
   owner node['sentry_admin']
-  group node['sentry_group']
+  group node['sentry']['admin_group']
   action :create
 end
