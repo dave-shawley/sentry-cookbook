@@ -93,6 +93,16 @@ integration tests is to ensure that the recipe works as advertised, the unit
 tests ensure that all of the configuration options work correctly and all of
 the low-level details are spot on.
 
+One of the difficulties associated with running the unit tests is that you
+absolutely have to *vendor* the Sentry cookbook after changing it.  You might
+be able to overcome this with a local knife configuration file, but I decided
+to take advantage of the fact that the *vendor* directory is added to the
+cookbook path automatically.  The `spec:unit` task will do this for you.  You
+can also use the excellent [guard][7] utility to continuously run the unit
+tests while you develop.  The provided _Guardfile_ will run RSpec when either
+a spec or something important within the recipe changes.  I usually leave it
+running in another console while I am working through a feature.
+
 
 [1]: http://rvm.io/
 [2]: http://vagrantup.com/
@@ -100,3 +110,4 @@ the low-level details are spot on.
 [4]: http://rspec.info/
 [5]: https://github.com/acrmp/chefspec/
 [6]: https://github.com/calavera/minitest-chef-handler/
+[7]: https://github.com/guard/guard/wiki/
