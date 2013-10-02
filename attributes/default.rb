@@ -1,4 +1,4 @@
 default['sentry']['user'] = 'sentry'
-default['sentry']['admin_group'] = 'sentry'
 default['sentry']['home'] = '/var/sentry'
-default['sentry_admin'] = 'root'
+default['sentry']['admin_user'] = 'root'
+default['sentry']['admin_group'] = 'sentry'

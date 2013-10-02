@@ -39,7 +39,7 @@ user node['sentry']['user'] do
 end
 
 group node['sentry']['admin_group'] do
-  members node['sentry']['user']
+  members node['sentry']['admin_user']
   action :create
 end
 
@@ -58,7 +58,7 @@ directory '/opt/sentry' do
 end
 
 python_virtualenv '/opt/sentry' do
-  owner node['sentry_admin']
+  owner node['sentry']['admin_user']
   group node['sentry']['admin_group']
   action :create
 end

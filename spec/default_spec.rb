@@ -37,7 +37,7 @@ describe 'sentry::default' do
   it 'creates sentry group' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['admin_group'] = 'configured-group'
-    chef_run.node.set['sentry']['user'] = 'configured-user'
+    chef_run.node.set['sentry']['admin_user'] = 'configured-user'
     chef_run.converge  'sentry::default'
 
     expect(chef_run).to create_group 'configured-group'
@@ -74,7 +74,7 @@ describe 'sentry::default' do
   it 'creates sentry virtual environment' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['admin_group'] = 'configured-group'
-    chef_run.node.set['sentry_admin'] = 'admin-user'
+    chef_run.node.set['sentry']['admin_user'] = 'admin-user'
     chef_run.converge 'sentry::default'
 
     expect(chef_run).to create_python_virtualenv '/opt/sentry'
