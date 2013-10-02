@@ -68,7 +68,35 @@ The **sentry-testing** machine is configured to install the *sentry*
 cookbook and run the minitest integration tests.  The last few lines are
 the really important ones.
 
+
+# TESTING DURING DEVELOPMENT
+
+You should be running tests regularly while you are developing.  Chef
+recipes are a little different than "normal" code when it comes to testing.
+There isn't a lot out there in terms of best practices so I took what I
+found and put together my own process.
+
+## Integration Tests
+
+Integration tests bring up a machine image using Vagrant and provisions it
+using Chef solo.  The run list for the node includes the [MiniTest Chef
+Handler][6] so that the tests in the *files/default/tests/minitest*
+directory will be executed during the Chef run.  These assert that the
+standard recipe works as advertised.
+
+## Unit Tests
+
+Unit testing is down without bringing up a virtual machine or installing the
+recipe anywhere.  I make use of [RSpec][4] and [ChefSpec][5] to unit test
+the recipes.  This is automated with `rake spec:unit`.  Where the job of the
+integration tests is to ensure that the recipe works as advertised, the unit
+tests ensure that all of the configuration options work correctly and all of
+the low-level details are spot on.
+
+
 [1]: http://rvm.io/
 [2]: http://vagrantup.com/
 [3]: https://www.virtualbox.org/
-
+[4]: http://rspec.info/
+[5]: https://github.com/acrmp/chefspec/
+[6]: https://github.com/calavera/minitest-chef-handler/

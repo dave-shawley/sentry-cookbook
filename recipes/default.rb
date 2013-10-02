@@ -30,35 +30,35 @@ package 'python-setuptools' do
   action :install
 end
 
-user node['sentry_user'] do
+user node['sentry']['user'] do
   gid 'daemon'
   shell '/bin/false'
   system true
-  home node['sentry_home']
+  home node['sentry']['home']
   action :create
 end
 
-group node['sentry_group'] do
-  members node['sentry_user']
+group node['sentry']['admin_group'] do
+  members node['sentry']['admin_user']
   action :create
 end
 
-directory node['sentry_home'] do
-  owner node['sentry_user']
-  group node['sentry_group']
+directory node['sentry']['home'] do
+  owner node['sentry']['user']
+  group node['sentry']['admin_group']
   mode 0750
   action :create
 end
 
 directory '/opt/sentry' do
-  owner node['sentry_user']
-  group node['sentry_group']
+  owner node['sentry']['user']
+  group node['sentry']['admin_group']
   mode 0775
   action :create
 end
 
 python_virtualenv '/opt/sentry' do
-  owner node['sentry_admin']
-  group node['sentry_group']
+  owner node['sentry']['admin_user']
+  group node['sentry']['admin_group']
   action :create
 end
