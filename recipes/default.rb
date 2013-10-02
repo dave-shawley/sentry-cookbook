@@ -34,7 +34,7 @@ user node['sentry']['user'] do
   gid 'daemon'
   shell '/bin/false'
   system true
-  home node['sentry_home']
+  home node['sentry']['home']
   action :create
 end
 
@@ -43,7 +43,7 @@ group node['sentry']['admin_group'] do
   action :create
 end
 
-directory node['sentry_home'] do
+directory node['sentry']['home'] do
   owner node['sentry']['user']
   group node['sentry']['admin_group']
   mode 0750
