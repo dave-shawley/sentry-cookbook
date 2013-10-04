@@ -30,4 +30,5 @@ task 'maintainer-clean' do
   Rake::Task['vendor:clean'].execute
   sh 'vagrant destroy -f'
   rmtree '.vagrant'
+  rmtree 'tmp'
 end
