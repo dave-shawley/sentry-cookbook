@@ -51,7 +51,7 @@ directory node['sentry']['home'] do
 end
 
 directory '/opt/sentry' do
-  owner node['sentry']['user']
+  owner node['sentry']['admin_user']
   group node['sentry']['admin_group']
   mode 0775
   action :create
