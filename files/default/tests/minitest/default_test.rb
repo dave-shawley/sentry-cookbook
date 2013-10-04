@@ -5,8 +5,10 @@ describe 'sentry::default' do
   include Helpers::Sentry
 
   it 'creates the sentry user' do
-    user('sentry').must_exist.with('group', group('daemon').gid)
-    directory('/var/sentry').must_exist.with(:owner, 'sentry').and('group', 'sentry')
+    user('sentry').must_exist.with(:group, 'daemon')
+    directory('/var/sentry') \
+      .must_exist \
+      .with(:owner, 'sentry').and(:group, 'sentry')
   end
 
   it 'creates the administrative group' do
@@ -16,7 +18,7 @@ describe 'sentry::default' do
   it 'creates a virtualenv for sentry' do
     directory('/opt/sentry') \
       .must_exist \
-      .with(:owner, 'root').and('group', 'sentry') \
+      .with(:owner, 'root').and(:group, 'sentry') \
       .with_permissions(0025)
     file('/opt/sentry/bin/activate').must_exist
     file('/opt/sentry/bin/python').must_exist
