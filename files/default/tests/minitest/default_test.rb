@@ -20,8 +20,10 @@ describe 'sentry::default' do
       .must_exist \
       .with(:owner, 'root').and(:group, 'sentry') \
       .with_permissions(0025)
-    file('/opt/sentry/bin/activate').must_exist
-    file('/opt/sentry/bin/python').must_exist
+    lookup_resource('python_virtualenv[/opt/sentry]') \
+      .must_exist \
+      .with(:owner, 'root') \
+      .and(:group, 'sentry')
   end
 
 end

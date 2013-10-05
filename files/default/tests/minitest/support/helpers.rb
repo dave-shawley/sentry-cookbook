@@ -3,6 +3,26 @@ module Helpers
     include MiniTest::Chef::Assertions
     include MiniTest::Chef::Context
     include MiniTest::Chef::Resources
+
+    def lookup_resource(name)
+      begin
+        resource = run_context.resource_collection.lookup name
+        resource.instance_eval do
+          def must_exist
+            self
+          end
+        end
+      rescue Chef::Exceptions::ResourceNotFound
+        resource = Chef::Resource.new name
+        resource.instance_eval do
+          def must_exist
+            raise MiniTest::Assertion, "Resource #{@name} does not exist in the run context"
+          end
+        end
+      end
+
+      resource
+    end
   end
 end
 
