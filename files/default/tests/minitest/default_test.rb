@@ -37,4 +37,11 @@ describe 'sentry::default' do
       .with_permissions(0555)
   end
 
+  it 'configures sentry' do
+    directory('/etc/opt/sentry') \
+      .must_exist \
+      .with(:group, 'sentry') \
+      .with_permissions(0070)
+  end
+
 end

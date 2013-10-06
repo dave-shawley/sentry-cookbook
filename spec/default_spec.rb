@@ -87,7 +87,20 @@ describe 'sentry::default' do
   end
 
   it 'creates sentry service' do
-    pending 'TODO'
+    chef_run = ChefSpec::ChefRunner.new
+    chef_run.node.set['sentry']['user'] = 'daemon-user'
+    chef_run.node.set['sentry']['admin_group'] = 'admin-group'
+    chef_run.node.set['sentry']['admin_user'] = 'admin-user'
+    chef_run.converge 'sentry::default'
+
+    expect(chef_run).to create_directory '/etc/opt/sentry'
+    dir = chef_run.directory '/etc/opt/sentry'
+    expect(dir.owner).to eq 'admin-user'
+    expect(dir.group).to eq 'admin-group'
+    expect(dir.mode).to eq 0775
+
+    pending 'should generate sentry configuration'
+    pending 'should install sentry as a daemon'
   end
 
 end

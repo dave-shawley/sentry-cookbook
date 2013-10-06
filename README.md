@@ -22,6 +22,9 @@ This cookbook installs Sentry following the guidelines described in version
 [2.3 of the Filesystem Hierarchy Standard][FHS].  In particular, the Python
 virtual environment is installed as _/opt/sentry_.  This is configurable via
 the `node[sentry][home]` attribute though changing it will violate the FHS.
+The configuration for the Sentry daemon is stored in _/etc/opt/sentry/conf.py_
+which is a simple Python file.  It can be editted by any user in the
+_administrative group_ configured by the `node[sentry][admin_group]` attribute.
 
 
 # Attributes

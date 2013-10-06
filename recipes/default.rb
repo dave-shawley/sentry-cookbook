@@ -69,3 +69,11 @@ python_pip 'sentry' do
   group node['sentry']['admin_group']
   version node['sentry']['version']
 end
+
+directory '/etc/opt/sentry' do
+  owner node['sentry']['admin_user']
+  group node['sentry']['admin_group']
+  mode 0775
+  action :create
+end
+
