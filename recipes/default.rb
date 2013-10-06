@@ -77,3 +77,9 @@ directory '/etc/opt/sentry' do
   action :create
 end
 
+template '/etc/opt/sentry/conf.py' do
+  owner node['sentry']['admin_user']
+  group node['sentry']['admin_group']
+  mode 0660
+  action :create_if_missing
+end

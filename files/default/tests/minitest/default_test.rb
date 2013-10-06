@@ -42,6 +42,10 @@ describe 'sentry::default' do
       .must_exist \
       .with(:group, 'sentry') \
       .with_permissions(0070)
+    file('/etc/opt/sentry/conf.py') \
+      .must_exist \
+      .with(:group, 'sentry') \
+      .with_permissions(0060)
   end
 
 end

@@ -99,7 +99,14 @@ describe 'sentry::default' do
     expect(dir.group).to eq 'admin-group'
     expect(dir.mode).to eq 0775
 
-    pending 'should generate sentry configuration'
+    # The following does not work as expected
+    #expect(chef_run).to create_if_missing_file '/etc/opt/sentry/conf.py'
+    conf_file = chef_run.template '/etc/opt/sentry/conf.py'
+    expect(conf_file.action).to eq [:create_if_missing]
+    expect(conf_file.owner).to eq 'admin-user'
+    expect(conf_file.group).to eq 'admin-group'
+    expect(conf_file.mode).to eq 0660
+
     pending 'should install sentry as a daemon'
   end
 
