@@ -62,3 +62,10 @@ python_virtualenv '/opt/sentry' do
   group node['sentry']['admin_group']
   action :create
 end
+
+python_pip 'sentry' do
+  virtualenv '/opt/sentry'
+  user node['sentry']['admin_user']
+  group node['sentry']['admin_group']
+  version node['sentry']['version']
+end

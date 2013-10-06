@@ -26,4 +26,15 @@ describe 'sentry::default' do
       .and(:group, 'sentry')
   end
 
+  it 'installs sentry into the virtualenv' do
+    lookup_resource('python_pip[sentry]') \
+      .must_exist \
+      .with(:virtualenv, '/opt/sentry') \
+      .and(:user, 'root').and(:group, 'sentry') \
+      .and(:version, nil)  # nil <=> latest
+    file('/opt/sentry/bin/sentry') \
+      .must_exist \
+      .with_permissions(0555)
+  end
+
 end

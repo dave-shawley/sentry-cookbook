@@ -72,7 +72,18 @@ describe 'sentry::default' do
   end
 
   it 'installs sentry package' do
-    pending 'should install into virtualenv'
+    chef_run = ChefSpec::ChefRunner.new
+    chef_run.node.set['sentry']['admin_group'] = 'configured-group'
+    chef_run.node.set['sentry']['admin_user'] = 'admin-user'
+    chef_run.node.set['sentry']['version'] = '6.6.6'
+    chef_run.converge 'sentry::default'
+
+    expect(chef_run).to install_python_pip 'sentry'
+    pip_action = chef_run.python_pip 'sentry'
+    expect(pip_action.virtualenv).to eq '/opt/sentry'
+    expect(pip_action.user).to eq 'admin-user'
+    expect(pip_action.group).to eq 'configured-group'
+    expect(pip_action.version).to eq '6.6.6'
   end
 
   it 'creates sentry service' do
