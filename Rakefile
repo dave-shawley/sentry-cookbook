@@ -24,6 +24,11 @@ namespace :spec do
 
   desc 'Run unit tests'
   task :unit => ['vendor:install', :spec]
+
+  desc 'Run integration tests'
+  task :integration do
+    sh %q{vagrant provision}
+  end
 end
 
 
