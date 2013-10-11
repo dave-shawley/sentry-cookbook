@@ -26,9 +26,6 @@
 
 include_recipe 'python'
 
-package 'python-setuptools' do
-  action :install
-end
 
 user node['sentry']['user'] do
   gid 'daemon'

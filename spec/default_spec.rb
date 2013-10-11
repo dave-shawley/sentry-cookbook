@@ -4,13 +4,6 @@ require File.expand_path('../support/helpers', __FILE__)
 
 describe 'sentry::default' do
 
-  it 'installs sentry requirements' do
-    chef_run = ChefSpec::ChefRunner.new
-    chef_run.converge 'sentry::default'
-
-    expect(chef_run).to install_package 'python-setuptools'
-  end
-
   it 'creates sentry user' do
     chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['user'] = 'configured-user'
