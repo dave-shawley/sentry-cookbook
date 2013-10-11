@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vim: set ft=ruby :
 
+require 'berkshelf'
 require 'rspec/core/rake_task'
 
 
@@ -12,7 +13,8 @@ namespace :vendor do
 
   desc '"Vendor" the cookbooks using berks'
   task :install do
-    sh %Q{berks install --path vendor/cookbooks}
+    berks = Berkshelf::Berksfile.from_file 'Berksfile'
+    berks.install :path => 'vendor/cookbooks'
   end
 end
 
@@ -28,7 +30,7 @@ end
 desc 'Remove all of the generated files'
 task 'maintainer-clean' do
   Rake::Task['vendor:clean'].execute
-  sh 'vagrant destroy -f'
+  sh %q{vagrant destroy -f}
   rmtree '.vagrant'
   rmtree 'tmp'
 end
