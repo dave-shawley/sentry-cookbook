@@ -9,6 +9,7 @@ Installs and configures a sentry instance.
 
 ## Cookbooks
 - python
+- supervisor
 
 # Usage
 Include the default recipe in a run list to use `sentry`.  Installs the
