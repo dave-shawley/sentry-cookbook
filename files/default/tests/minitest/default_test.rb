@@ -48,4 +48,15 @@ describe 'sentry::default' do
       .with_permissions(0060)
   end
 
+  it 'creates supervisor job' do
+    lookup_resource('supervisor_service[sentry]') \
+      .must_exist \
+      .with(:user, 'sentry') \
+      .with(:command, '/opt/sentry/bin/sentry start') \
+      .with(:environment, {:SENTRY_CONF => '/etc/opt/sentry/conf.py'}) \
+      .with(:stopsignal, 'QUIT') \
+      .with(:autostart, false) \
+      .with(:action, [:enable])
+  end
+
 end

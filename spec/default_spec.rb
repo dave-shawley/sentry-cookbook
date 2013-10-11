@@ -84,6 +84,7 @@ describe 'sentry::default' do
     chef_run.node.set['sentry']['user'] = 'daemon-user'
     chef_run.node.set['sentry']['admin_group'] = 'admin-group'
     chef_run.node.set['sentry']['admin_user'] = 'admin-user'
+    chef_run.node.set['sentry']['home'] = '/configured/home/dir'
     chef_run.converge 'sentry::default'
 
     expect(chef_run).to create_directory '/etc/opt/sentry'
@@ -100,7 +101,13 @@ describe 'sentry::default' do
     expect(conf_file.group).to eq 'admin-group'
     expect(conf_file.mode).to eq 0660
 
-    pending 'should install sentry as a daemon'
+    expect(chef_run).to enable_supervisor_service 'sentry'
+    supervisor = chef_run.supervisor_service 'sentry'
+    expect(supervisor.user).to eq 'daemon-user'
+    expect(supervisor.command).to eq '/opt/sentry/bin/sentry start'
+    expect(supervisor.action).to eq [:enable]
+    expect(supervisor.autostart).to eq false
+    expect(supervisor.environment[:SENTRY_CONF]).to eq '/etc/opt/sentry/conf.py'
   end
 
 end

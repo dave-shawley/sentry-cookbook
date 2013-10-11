@@ -25,6 +25,7 @@
 #
 
 include_recipe 'python'
+include_recipe 'supervisor'
 
 
 user node['sentry']['user'] do
@@ -79,4 +80,13 @@ template '/etc/opt/sentry/conf.py' do
   group node['sentry']['admin_group']
   mode 0660
   action :create_if_missing
+end
+
+supervisor_service 'sentry' do
+  command '/opt/sentry/bin/sentry start'
+  user node['sentry']['user']
+  environment({:SENTRY_CONF => '/etc/opt/sentry/conf.py'})
+  stopsignal 'QUIT'
+  action :enable
+  autostart false
 end
