@@ -29,4 +29,18 @@ Vagrant.configure('2') do |config|
     end
   end
 
+  config.vm.define 'sentry-centos' do |box|
+    box.vm.box = 'centos6.3'
+    box.vm.box_url = 'https://dl.dropbox.com/u/7225008/Vagrant/CentOS-6.3-x86_64-minimal.box'
+    box.vm.hostname = 'sentry-centos'
+    box.vm.network :private_network, ip: '33.33.33.11'
+    box.vm.provision :chef_solo do |chef|
+      apply_chef_cache_workaround chef
+      chef.run_list = [
+        'recipe[minitest-handler::default]',
+        'recipe[sentry::default]',
+      ]
+    end
+  end
+
 end

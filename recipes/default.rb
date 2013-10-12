@@ -82,6 +82,25 @@ template '/etc/opt/sentry/conf.py' do
   action :create_if_missing
 end
 
+service 'supervisor for centos' do
+  service_name 'supervisor'
+  supports :restart => true, :status => true
+  action :nothing
+  only_if { node['platform'] == 'centos' }
+end
+
+template 'supervisor init for centos' do
+  path '/etc/init.d/supervisor'
+  owner 'root'
+  group 'root'
+  mode 0755
+  source 'supervisord-init.sh.erb'
+  action :create
+  notifies :start, 'service[supervisor for centos]', :immediately
+  notifies :enable, 'service[supervisor for centos]', :immediately
+  only_if { node['platform'] == 'centos' }
+end
+
 supervisor_service 'sentry' do
   command '/opt/sentry/bin/sentry start'
   user node['sentry']['user']

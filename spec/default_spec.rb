@@ -109,4 +109,31 @@ describe 'sentry::default' do
     expect(supervisor.environment[:SENTRY_CONF]).to eq '/etc/opt/sentry/conf.py'
   end
 
+  it 'installs supervisor on Ubuntu' do
+    chef_run = ChefSpec::ChefRunner.new(platform: 'ubuntu', version: '12.04')
+    chef_run.converge 'sentry::default'
+
+    # service should come from the supervisor cookbook
+    expect(chef_run).to start_service 'supervisor'
+    service = chef_run.service 'supervisor'
+    expect(service.cookbook_name).to eq :supervisor
+  end
+
+  it 'installs supervisord on CentOS' do
+    chef_run = ChefSpec::ChefRunner.new(platform: 'centos', version: '6.3')
+    chef_run.node.set['platform'] = 'centos'
+    chef_run.converge 'sentry::default'
+
+    # service should come from our cookbook
+    service = chef_run.service 'supervisor for centos'
+    expect(service.service_name).to eq 'supervisor'
+    expect(service.cookbook_name).to eq :sentry
+
+    expect(chef_run).to create_template 'supervisor init for centos'
+    template = chef_run.template 'supervisor init for centos'
+    expect(template.path).to eq '/etc/init.d/supervisor'
+    expect(template).to notify 'service[supervisor for centos]', :start
+    expect(template).to notify 'service[supervisor for centos]', :enable
+  end
+
 end
