@@ -11,6 +11,7 @@ module ChefSpec
   module Matchers
     define_resource_matchers([:create, :delete], [:python_virtualenv], :name)
     define_resource_matchers([:enable], [:supervisor_service], :name)
+    define_resource_matchers([:create, :create_if_missing], [:template], :name)
   end
 end
 

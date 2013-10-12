@@ -93,8 +93,7 @@ describe 'sentry::default' do
     expect(dir.group).to eq 'admin-group'
     expect(dir.mode).to eq 0775
 
-    # The following does not work as expected
-    #expect(chef_run).to create_if_missing_file '/etc/opt/sentry/conf.py'
+    expect(chef_run).to create_if_missing_template '/etc/opt/sentry/conf.py'
     conf_file = chef_run.template '/etc/opt/sentry/conf.py'
     expect(conf_file.action).to eq [:create_if_missing]
     expect(conf_file.owner).to eq 'admin-user'
