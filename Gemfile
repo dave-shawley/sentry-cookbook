@@ -7,8 +7,6 @@ gem 'rake', '~> 10'
 
 group :integration do
   gem 'chefspec', '~>2.0'
-  gem 'minitest', '~>4.7'
-  gem 'minitest-chef-handler', '~>1.0'
 end
 
 group :development do

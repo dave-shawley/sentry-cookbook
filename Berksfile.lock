@@ -1,0 +1,24 @@
+{
+  "sources": {
+    "python": {
+      "locked_version": "1.4.0"
+    },
+    "apt": {
+      "locked_version": "2.3.0"
+    },
+    "bats-runner": {
+      "locked_version": "0.1.0",
+      "git": "git@github.com:dave-shawley/bats-runner.git",
+      "ref": "b9a9a03ca6c9e30be4fd5ab26c22d5bd86989ddb"
+    },
+    "sentry": {
+      "path": "."
+    },
+    "build-essential": {
+      "locked_version": "1.4.2"
+    },
+    "yum": {
+      "locked_version": "2.4.4"
+    }
+  }
+}

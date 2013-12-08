@@ -12,3 +12,9 @@ guard :rspec do
   watch(%r{^recipes/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
 end
 
+guard :shell do
+  watch(%r{^attributes/.+\.rb$}) { %x{vagrant provision} }
+  watch(%r{^templates/.+\.rb$}) { %x{vagrant provision} }
+  watch(%r{^recipes/(.+)\.rb$}) { %x{vagrant provision} }
+  watch(%r{^test/integration/.+\.bats$}) { %x{vagrant provision} }
+end

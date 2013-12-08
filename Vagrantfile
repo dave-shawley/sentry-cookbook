@@ -15,7 +15,8 @@ Vagrant.configure('2') do |config|
     box.vm.network :private_network, ip: '33.33.33.10'
     box.vm.provision :chef_solo do |chef|
       chef.run_list = [
-        'recipe[minitest-handler::default]',
+        'recipe[apt]',
+        'recipe[bats-runner::install-bats]',
         'recipe[sentry::default]',
       ]
     end

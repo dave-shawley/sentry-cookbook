@@ -253,7 +253,5 @@ DEPENDENCIES
   guard (~> 1.8)
   guard-rspec (~> 3.1)
   guard-shell (~> 0.5)
-  minitest (~> 4.7)
-  minitest-chef-handler (~> 1.0)
   rake (~> 10)
   rspec (~> 2.14)
