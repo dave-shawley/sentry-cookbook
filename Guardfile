@@ -1,16 +1,14 @@
-require 'berkshelf'
-require 'guard/rspec'
+ignore %r{^\.}
+ignore %r{.+\.swp}
 
-guard :shell do
-  watch(%r{^(attributes|recipes)/.+\.rb$}) do
-	berks = Berkshelf::Berksfile.from_file 'Berksfile'
-	berks.install :path => 'vendor/cookbooks'
-	rspec = RSpec::Runner.new :cli => '--color --drb'
-	rspec.run ['spec']
-  end
-end
-
-guard :rspec, :cli => '--color --drb' do
+guard :rspec do
+  watch(%r{metadata\.rb}) { "spec" }
+  watch(%r{^attributes/.+\.rb$}) { "spec" }
+  watch(%r{^templates/.+\.rb$}) { "spec" }
   watch(%r{^spec/.+_spec\.rb$})
+  watch(%r{^spec/spec_helper\.rb$}) { "spec" }
+
+  watch(%r{^libraries/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^recipes/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
 end
 
