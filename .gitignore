@@ -1,16 +1,12 @@
-.vagrant
-Berksfile.lock
-*~
 *#
-.#*
-\#*#
-.*.sw[a-z]
 *.un~
-/cookbooks
-/vendor
-
-# Bundler
-Gemfile.lock
-bin/*
+*~
+.#*
+.*.sw[a-z]
 .bundle/*
-
+.vagrant
+/cookbooks
+/tmp
+/vendor
+\#*#
+bin/*
