@@ -2,80 +2,69 @@
 require 'spec_helper'
 
 describe 'sentry::default' do
+  let(:chef_run) do
+    stub_command("/usr/bin/python -c 'import setuptools'").and_return true
+    ChefSpec::Runner.new
+  end
 
   it 'installs sentry requirements' do
-    chef_run = ChefSpec::ChefRunner.new
-    chef_run.converge 'sentry::default'
+    chef_run.converge described_recipe
 
     expect(chef_run).to install_package 'python-setuptools'
   end
 
   it 'creates sentry user' do
-    chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['user'] = 'configured-user'
     chef_run.node.set['sentry']['home'] = '/configured/home/dir'
-    chef_run.converge 'sentry::default'
+    chef_run.converge described_recipe
 
-    expect(chef_run).to create_user 'configured-user'
-    user = chef_run.user 'configured-user'
-    expect(user.home).to eq '/configured/home/dir'
+    expect(chef_run).to create_user('configured-user').with(
+      home: '/configured/home/dir',
+    )
   end
 
   it 'creates sentry group' do
-    chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['admin_group'] = 'configured-group'
     chef_run.node.set['sentry']['admin_user'] = 'configured-user'
-    chef_run.converge  'sentry::default'
+    chef_run.converge described_recipe
 
-    expect(chef_run).to create_group 'configured-group'
-    group = chef_run.group 'configured-group'
-    expect(group.members).to eq ['configured-user']
+    expect(chef_run).to create_group('configured-group').with(
+      members: ['configured-user'],
+    )
   end
 
   it 'uses sensible default user attributes' do
-    chef_run = ChefSpec::ChefRunner.new
-    chef_run.converge 'sentry::default'
+    chef_run.converge described_recipe
 
-    expect(chef_run).to create_user 'sentry'
-    user = chef_run.user 'sentry'
-    expect(user.system).to be_true
-    expect(user.shell).to eq '/bin/false'
-    expect(user.gid).to eq 'daemon'
-    expect(user.home).to eq '/var/sentry'
+    expect(chef_run).to create_user('sentry').with(
+      system: true,
+      shell: '/bin/false',
+      gid: 'daemon',
+      home: '/var/sentry',
+    )
   end
 
   it 'creates sentry home directory' do
-    chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['home'] = '/configured/home/dir'
     chef_run.node.set['sentry']['user'] = 'configured-user'
     chef_run.node.set['sentry']['admin_group'] = 'configured-group'
-    chef_run.converge 'sentry::default'
+    chef_run.converge described_recipe
 
-    expect(chef_run).to create_directory '/configured/home/dir'
-    dir = chef_run.directory '/configured/home/dir'
-    expect(dir.owner).to eq 'configured-user'
-    expect(dir.group).to eq 'configured-group'
-    expect(dir.mode).to eq 0750
+    expect(chef_run).to create_directory('/configured/home/dir').with(
+      owner: 'configured-user',
+      group: 'configured-group',
+      mode: 00750,
+    )
   end
 
   it 'creates sentry virtual environment' do
-    chef_run = ChefSpec::ChefRunner.new
     chef_run.node.set['sentry']['admin_group'] = 'configured-group'
     chef_run.node.set['sentry']['admin_user'] = 'admin-user'
-    chef_run.converge 'sentry::default'
+    chef_run.converge described_recipe
 
-    expect(chef_run).to create_python_virtualenv '/opt/sentry'
-    env = chef_run.python_virtualenv '/opt/sentry'
-    expect(env.owner).to eq 'admin-user'
-    expect(env.group).to eq 'configured-group'
+    expect(chef_run).to create_python_virtualenv('/opt/sentry').with(
+      owner: 'admin-user',
+      group: 'configured-group',
+    )
   end
-
-  it 'installs sentry package' do
-    pending 'should install into virtualenv'
-  end
-
-  it 'creates sentry service' do
-    pending 'TODO'
-  end
-
 end
