@@ -6,7 +6,7 @@ gem 'guard', '~>1.8'
 gem 'rake', '~> 10'
 
 group :integration do
-  gem 'chefspec', '~>2.0'
+  gem 'chefspec', '~>3.0'
 end
 
 group :development do

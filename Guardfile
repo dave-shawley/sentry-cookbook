@@ -1,5 +1,4 @@
-ignore %r{^\.}
-ignore %r{.+\.swp}
+ignore %r{^\.}, %r{.+\.swp}
 
 guard :rspec do
   watch(%r{metadata\.rb}) { "spec" }
@@ -7,6 +6,7 @@ guard :rspec do
   watch(%r{^templates/.+\.rb$}) { "spec" }
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^spec/spec_helper\.rb$}) { "spec" }
+  watch(%r{^spec/support/.+\.rb$}) { "spec" }
 
   watch(%r{^libraries/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{^recipes/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
