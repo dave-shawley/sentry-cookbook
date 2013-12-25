@@ -12,7 +12,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define 'sentry-testing' do |box|
     box.vm.hostname = 'sentry-test'
-    box.vm.network :private_network, ip: '33.33.33.10'
+    box.vm.network :private_network, ip: '172.16.0.12'
     box.vm.provision :chef_solo do |chef|
       chef.run_list = [
         'recipe[apt]',
