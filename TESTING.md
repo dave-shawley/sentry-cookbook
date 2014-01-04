@@ -1,45 +1,69 @@
 # DEVELOPMENT SETUP
 
 First things first, lets get your ruby environment bootstrapped.  If you
-don't have a *good* ruby development environment set up, then download
-and install [rvm][1].  After that, we can set up things the way that they
-should be set up.
+don't have a *good* ruby development environment set up, then install
+[rbenv][1].  After that, we can set up things the way that they should
+be set up.
 
-    prompt% rvm use
-    Using /Users/daveshawley/.rvm/gems/ruby-1.9.3-p448
-    prompt% rvm gemset use sentry-cookbook
-    Using ruby-1.9.3-p448 with gemset sentry-cookbook
-    prompt% gem install bundler --no-rdoc --no-ri
-    Fetching: bundler-1.3.5.gem (100%)
-    Successfully installed bundler-1.3.5
-    1 gem installed
-    prompt% bundle install --quiet
+    prompt% git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
+
+Add the following lines to your shell initializatin file (e.g.,
+*$HOME/.zshrc*, *$HOME/.bashrc*).
+
+    export PATH="$HOME/.rbenv/bin;$PATH"
+    eval "$(rbenv init -)"
+
+Run **$HOME/.rbenv/bin/rbenv init** from the command line if you are
+paranoid enough to care.
+
+Next we get to install a ruby version to work with.  This step makes
+use of the [ruby-build][12] plugin to rbenv.
+
+    prompt% git clone https://github.com/sstephenson/ruby-build.git $HOME/.rbenv/plugins/ruby-build
+    prompt% rbenv install 1.9.3-p448
+    prompt% rehash
+
+This project manages its ruby gem dependencies using the [bundler][13]
+utility and a *Gemfile*.  You will beed to install this into your new
+environment as well:
+
+    prompt% gem install bundler
+    prompt% rbenv rehash
+
+Now you can slurp in all of the dependencies using the Bundler utility.
+Run the following command from within the project directory.  The ruby
+version is *wired* by the *.ruby-version* file at the root of the
+directory.
+
+    prompt% bundle install
+    prompt% rbenv rehash
+
+The bundler manages a sandboxed Gem environment and runs commands within
+a sandbox containing only specific versions of specific gems.  The
+versions are pinned in the *Gemfile* as necessary.  When you install them
+with the bundle utility, it creates a manifest of the precise versions of
+the installed gems and stores the list in *Gemfile.lock*.
 
 # VERIFYING YOUR ENVIRONMENT
 
 Now you should be set up for development.  Give it a try by running the
 unit tests.
 
-    prompt% rake spec:unit
+    prompt% bundle exec rake spec:unit
     /.../bin/ruby -S rspec ./spec/default_spec.rb
-    Using python (1.4.0)
-    Using apt (2.3.0)
-    Installing bats-runner (0.1.0) from git: 'git@github.com:dave-shawley/bats-runner.git' with branch: 'master' at ref: 'b9a9a03ca6c9e30be4fd5ab26c22d5bd86989ddb'
-    Using sentry (0.1.0)
-    Using build-essential (1.4.2)
-    Using yum (2.4.4)
-    ......**
+
+    sentry::default
+      creates sentry virtual environment
+      creates sentry home directory
+      creates sentry user
+      creates sentry group
+      installs sentry requirements
+      uses sensible default user attributes
     
-    Pending:
-      sentry::default installs sentry package
-        # should install into virtualenv
-        # ./spec/default_spec.rb:88
-      sentry::default creates sentry service
-        # TODO
-        # ./spec/default_spec.rb:92
+    Finished in 0.41714 seconds
+    6 examples, 0 failures
     
-    Finished in 0.40915 seconds
-    8 examples, 0 failures, 2 pending
+    Randomized with seed 6476
 
 If you get this far, then things are going pretty well.  Let's try
 spinning up the testing VM using [vagrant][2].  If you don't have it
@@ -109,7 +133,7 @@ recipe changes.  I usually leave it running in another console while I am
 working through a feature.
 
 
-[1]: http://rvm.io/
+[1]: https://github.com/sstephenson/rbenv#installation
 [2]: http://vagrantup.com/
 [3]: https://www.virtualbox.org/
 [4]: http://rspec.info/
@@ -120,3 +144,5 @@ working through a feature.
 [9]: https://github.com/test-kitchen/test-kitchen
 [10]: https://github.com/calavera/minitest-chef-handler
 [11]: https://github.com/sstephenson/bats
+[12]: https://github.com/sstephenson/ruby-build
+[13]: http://bundler.io
